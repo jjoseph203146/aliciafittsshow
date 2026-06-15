@@ -68,6 +68,15 @@ All routes verified in build output:
 - `/admin/submissions` — expandable cards
 - `/admin/nominations` — expandable cards
 
+## Fixes — 2026-06-15 (pass 2)
+
+### Files modified
+| File | Change |
+|------|--------|
+| `src/app/(public)/episodes/EpisodesClient.tsx` | Fixed: hardcoded category pills (All / Finance / Community / Business / Health / Events / Interviews); added 9 placeholder episode cards with search + filter working before real data exists |
+| `src/app/(public)/photos/PhotosClient.tsx` | Fixed: 12 placeholder photos in masonry (dramatically varied heights 210–480px); hot-pink border + dark overlay + magnifier icon on hover; lightbox opens on click, cycles with ‹/›, shows counter, closes with ✕ or background click |
+| `src/app/(public)/spotlight/page.tsx` | Fixed: 6 placeholder spotlight cards (3-col × 2-row) with gradient photo areas, names, hot-pink category pills, 2-line impact text, "Read Their Story →" link; section heading added; nomination form fully visible at bottom |
+
 ## Design Reference
 All UI rebuilt to match `_reference/good-news-csra-prototype.html` exactly.
 Colors, fonts, spacing, and layout spec from prototype HTML.

@@ -12,6 +12,15 @@ export const dynamic = "force-dynamic";
 
 const PF = "var(--font-playfair), serif";
 
+const PLACEHOLDER_SPOTLIGHTS = [
+  { id: "ph1", name: "Marcus Williams", org: "CSRA Food Network", impact: "Feeds over 200 families every weekend through a grassroots pantry he built from scratch in 2018.", category: "Community", gradient: "linear-gradient(150deg,#5B2D8E,#3A2456)" },
+  { id: "ph2", name: "Dr. Keisha Grant", org: "Augusta Free Clinic", impact: "Provides free healthcare to uninsured residents and has served over 4,000 patients in three years.", category: "Health", gradient: "linear-gradient(150deg,#C2557A,#8B2A5E)" },
+  { id: "ph3", name: "Tanya Morrison", org: "Girls Who Code CSRA", impact: "Teaching 120 girls across 6 schools to code, with 3 of her students now attending top engineering programs.", category: "Education", gradient: "linear-gradient(150deg,#4A6FA5,#2D3B5E)" },
+  { id: "ph4", name: "Pastor Elijah Ford", org: "Community Hope Center", impact: "Transformed a vacant lot into a thriving community garden that now produces 2 tons of fresh produce annually.", category: "Faith", gradient: "linear-gradient(150deg,#2E8B62,#1A5240)" },
+  { id: "ph5", name: "Sofia Reyes", org: "Augusta Arts Collective", impact: "Brought murals and public art to 14 neighborhoods, making the CSRA one of the most vibrant art communities in Georgia.", category: "Arts", gradient: "linear-gradient(150deg,#9B59B6,#6A3A8A)" },
+  { id: "ph6", name: "Darnell Jackson", org: "Second Chance Bakery", impact: "Employs formerly incarcerated youth and has helped 60+ individuals successfully reenter society through job training.", category: "Business", gradient: "linear-gradient(150deg,#E67E22,#A0522D)" },
+];
+
 export default async function SpotlightPage() {
   const supabase = await createClient();
   const { data: spotlights } = await supabase
@@ -23,6 +32,7 @@ export default async function SpotlightPage() {
 
   const featured = spotlights?.find((s: Spotlight) => s.is_featured) ?? spotlights?.[0] ?? null;
   const grid = spotlights?.filter((s: Spotlight) => s.id !== featured?.id) ?? [];
+  const usingPlaceholderGrid = grid.length === 0;
 
   return (
     <>
@@ -50,8 +60,21 @@ export default async function SpotlightPage() {
             <div style={{ padding: "46px 44px" }}>
               <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "#E91E8C", marginBottom: 14 }}>FEATURED SPOTLIGHT</div>
               <h2 style={{ fontFamily: PF, fontWeight: 800, fontSize: 34, color: "#4A2A6B", margin: "0 0 8px" }}>{featured?.name ?? "Community Leader"}</h2>
-              {featured?.org && <div style={{ fontSize: 14, fontWeight: 600, color: "#E91E8C", marginBottom: 22 }}>{featured.title ? `${featured.title} · ` : ""}{featured.org}</div>}
-              {featured?.impact && <p style={{ fontSize: 16, lineHeight: 1.7, color: "#6B6473", margin: "0 0 22px" }}>{featured.impact}</p>}
+              {featured?.org && (
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#E91E8C", marginBottom: 22 }}>
+                  {featured.title ? `${featured.title} · ` : ""}{featured.org}
+                </div>
+              )}
+              {!featured && (
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#E91E8C", marginBottom: 22 }}>Community Leader · Augusta, GA</div>
+              )}
+              {featured?.impact ? (
+                <p style={{ fontSize: 16, lineHeight: 1.7, color: "#6B6473", margin: "0 0 22px" }}>{featured.impact}</p>
+              ) : (
+                <p style={{ fontSize: 16, lineHeight: 1.7, color: "#6B6473", margin: "0 0 22px" }}>
+                  This month&apos;s featured spotlight is someone who has gone above and beyond to make the CSRA a better place. Their work touches lives every single day.
+                </p>
+              )}
               {featured?.bio && (
                 <div style={{ marginBottom: 26 }}>
                   <span style={{ fontWeight: 700, color: "#4A2A6B", fontSize: 15 }}>About: </span>
@@ -69,36 +92,51 @@ export default async function SpotlightPage() {
       {/* ── Grid ── */}
       <section style={{ background: "#F7F2FB" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "70px 32px" }}>
-          {grid.length > 0 ? (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 26 }}>
-              {grid.map((sp: Spotlight) => (
-                <div key={sp.id} style={{ background: "#fff", borderRadius: 18, overflow: "hidden", boxShadow: "0 12px 32px rgba(74,42,107,0.07)" }}>
-                  <div style={{ aspectRatio: "1/1", background: "linear-gradient(150deg,#6B3F8F,#3A2456)", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {sp.photo_url ? (
-                      <img src={sp.photo_url} alt={sp.name} style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }} />
-                    ) : (
+          <div style={{ textAlign: "center", marginBottom: 46 }}>
+            <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.18em", color: "#E91E8C", marginBottom: 12 }}>COMMUNITY HEROES</div>
+            <h2 style={{ fontFamily: PF, fontWeight: 800, fontSize: 40, color: "#4A2A6B", margin: 0 }}>More Spotlights</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 26 }}>
+            {usingPlaceholderGrid
+              ? PLACEHOLDER_SPOTLIGHTS.map((sp) => (
+                  <div key={sp.id} style={{ background: "#fff", borderRadius: 18, overflow: "hidden", boxShadow: "0 12px 32px rgba(74,42,107,0.07)" }}>
+                    <div style={{ aspectRatio: "1/1", background: sp.gradient, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <div style={{ width: 60, height: 60, borderRadius: "50%", background: "rgba(255,255,255,0.13)", border: "1.5px solid rgba(248,165,200,0.5)" }} />
-                    )}
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,transparent 60%,rgba(36,27,51,0.5))" }} />
-                  </div>
-                  <div style={{ padding: "22px 22px 24px" }}>
-                    <h3 style={{ fontFamily: PF, fontWeight: 700, fontSize: 19, color: "#4A2A6B", margin: "0 0 4px" }}>{sp.name}</h3>
-                    {sp.org && <div style={{ fontSize: 12.5, fontWeight: 600, color: "#E91E8C", marginBottom: 12 }}>{sp.org}</div>}
-                    {sp.impact && <p style={{ fontSize: 14, lineHeight: 1.55, color: "#6B6473", margin: "0 0 14px" }}>{sp.impact}</p>}
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      {sp.category && <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.08em", color: "#C2557A", background: "#FBE9F2", borderRadius: 999, padding: "5px 11px" }}>{sp.category}</span>}
-                      <span style={{ fontSize: 13.5, fontWeight: 600, color: "#4A2A6B" }}>Read Their Story →</span>
+                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,transparent 60%,rgba(26,10,46,0.5))" }} />
+                    </div>
+                    <div style={{ padding: "22px 22px 24px" }}>
+                      <h3 style={{ fontFamily: PF, fontWeight: 700, fontSize: 19, color: "#4A2A6B", margin: "0 0 4px" }}>{sp.name}</h3>
+                      <div style={{ fontSize: 12.5, fontWeight: 600, color: "#E91E8C", marginBottom: 12 }}>{sp.org}</div>
+                      <p style={{ fontSize: 14, lineHeight: 1.55, color: "#6B6473", margin: "0 0 14px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{sp.impact}</p>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.08em", color: "#C2557A", background: "#FBE9F2", borderRadius: 999, padding: "5px 11px" }}>{sp.category}</span>
+                        <span style={{ fontSize: 13.5, fontWeight: 600, color: "#4A2A6B", cursor: "pointer" }}>Read Their Story →</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div style={{ textAlign: "center", padding: "60px 20px" }}>
-              <div style={{ fontFamily: PF, fontSize: 22, color: "#4A2A6B", marginBottom: 8 }}>More spotlights coming soon</div>
-              <div style={{ fontSize: 15, color: "#9189A0" }}>Know someone who deserves recognition? Nominate them below.</div>
-            </div>
-          )}
+                ))
+              : grid.map((sp: Spotlight) => (
+                  <div key={sp.id} style={{ background: "#fff", borderRadius: 18, overflow: "hidden", boxShadow: "0 12px 32px rgba(74,42,107,0.07)" }}>
+                    <div style={{ aspectRatio: "1/1", background: "linear-gradient(150deg,#6B3F8F,#3A2456)", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      {sp.photo_url ? (
+                        <img src={sp.photo_url} alt={sp.name} style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }} />
+                      ) : (
+                        <div style={{ width: 60, height: 60, borderRadius: "50%", background: "rgba(255,255,255,0.13)", border: "1.5px solid rgba(248,165,200,0.5)" }} />
+                      )}
+                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,transparent 60%,rgba(36,27,51,0.5))" }} />
+                    </div>
+                    <div style={{ padding: "22px 22px 24px" }}>
+                      <h3 style={{ fontFamily: PF, fontWeight: 700, fontSize: 19, color: "#4A2A6B", margin: "0 0 4px" }}>{sp.name}</h3>
+                      {sp.org && <div style={{ fontSize: 12.5, fontWeight: 600, color: "#E91E8C", marginBottom: 12 }}>{sp.org}</div>}
+                      {sp.impact && <p style={{ fontSize: 14, lineHeight: 1.55, color: "#6B6473", margin: "0 0 14px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{sp.impact}</p>}
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        {sp.category && <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.08em", color: "#C2557A", background: "#FBE9F2", borderRadius: 999, padding: "5px 11px" }}>{sp.category}</span>}
+                        <span style={{ fontSize: 13.5, fontWeight: 600, color: "#4A2A6B", cursor: "pointer" }}>Read Their Story →</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+          </div>
         </div>
       </section>
 
