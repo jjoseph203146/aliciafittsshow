@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Spotlight } from "@/lib/types";
 
@@ -18,15 +18,22 @@ export default function SpotlightManager() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
 
+  // Form state
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [org, setOrg] = useState("");
   const [bio, setBio] = useState("");
   const [impact, setImpact] = useState("");
   const [category, setCategory] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
+
+  // Photo upload state
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [existingPhotoUrl, setExistingPhotoUrl] = useState<string | null>(null);
+  const [photoDragOver, setPhotoDragOver] = useState(false);
+  const [photoUploading, setPhotoUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   async function fetchSpotlights() {
     const { data } = await supabase.from("spotlights").select("*").order("created_at", { ascending: false });
@@ -38,21 +45,50 @@ export default function SpotlightManager() {
 
   function resetForm() {
     setName(""); setTitle(""); setOrg(""); setBio(""); setImpact("");
-    setCategory(""); setPhotoUrl(""); setIsFeatured(false); setIsPublished(false); setSaveError("");
+    setCategory(""); setIsFeatured(false); setIsPublished(false);
+    setPendingFile(null); setExistingPhotoUrl(null); setSaveError("");
   }
 
   function openPanel() { resetForm(); setPanelOpen(true); }
   function closePanel() { setPanelOpen(false); resetForm(); }
 
+  const handlePhotoDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setPhotoDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith("image/")) setPendingFile(file);
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true); setSaveError("");
+
+    let photoUrl: string | null = existingPhotoUrl;
+
+    // Upload photo if a new file was selected
+    if (pendingFile) {
+      setPhotoUploading(true);
+      const ext = pendingFile.name.split(".").pop();
+      const fileName = `spotlight-${Date.now()}.${ext}`;
+      const { error: uploadErr } = await supabase.storage.from("photos").upload(fileName, pendingFile, { upsert: false });
+      setPhotoUploading(false);
+      if (uploadErr) {
+        setSaveError(`Photo upload failed: ${uploadErr.message}`);
+        setSaving(false);
+        return;
+      }
+      const { data: { publicUrl } } = supabase.storage.from("photos").getPublicUrl(fileName);
+      photoUrl = publicUrl;
+    }
+
     const { error } = await supabase.from("spotlights").insert({
       name, title: title || null, org: org || null, bio: bio || null,
       impact: impact || null, category: category || null,
-      photo_url: photoUrl || null, is_featured: isFeatured, is_published: isPublished,
+      photo_url: photoUrl, is_featured: isFeatured, is_published: isPublished,
     });
-    if (error) { setSaveError(error.message); } else { closePanel(); fetchSpotlights(); }
+
+    if (error) { setSaveError(error.message); }
+    else { closePanel(); fetchSpotlights(); }
     setSaving(false);
   }
 
@@ -61,9 +97,9 @@ export default function SpotlightManager() {
     fetchSpotlights();
   }
 
-  async function deleteSpotlight(id: string) {
-    if (!confirm("Delete this spotlight?")) return;
-    await supabase.from("spotlights").delete().eq("id", id);
+  async function deleteSpotlight(s: Spotlight) {
+    if (!confirm(`Delete "${s.name}"? This cannot be undone.`)) return;
+    await supabase.from("spotlights").delete().eq("id", s.id);
     fetchSpotlights();
   }
 
@@ -108,7 +144,7 @@ export default function SpotlightManager() {
                   <button onClick={() => togglePublished(s)} style={{ flex: 1, background: "#F4ECF8", color: "#4A2A6B", border: "none", borderRadius: 8, padding: "9px", fontSize: 12.5, fontWeight: 600, cursor: "pointer" }}>
                     {s.is_published ? "Unpublish" : "Publish"}
                   </button>
-                  <button onClick={() => deleteSpotlight(s.id)} style={{ background: "#FCE7EC", color: "#E11D48", border: "none", borderRadius: 8, padding: "9px 14px", fontSize: 12.5, fontWeight: 600, cursor: "pointer" }}>
+                  <button onClick={() => deleteSpotlight(s)} style={{ background: "#FCE7EC", color: "#E11D48", border: "none", borderRadius: 8, padding: "9px 14px", fontSize: 12.5, fontWeight: 600, cursor: "pointer" }}>
                     Delete
                   </button>
                 </div>
@@ -142,19 +178,51 @@ export default function SpotlightManager() {
                   <input value={org} onChange={(e) => setOrg(e.target.value)} style={inputStyle} />
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 16 }}>
-                <div>
-                  <label style={labelStyle}>Category</label>
-                  <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ ...inputStyle, background: "#fff" }}>
-                    <option value="">Select…</option>
-                    {CATS.map((c) => <option key={c}>{c}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label style={labelStyle}>Photo URL</label>
-                  <input type="url" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} style={inputStyle} placeholder="https://…" />
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>Category</label>
+                <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ ...inputStyle, background: "#fff" }}>
+                  <option value="">Select…</option>
+                  {CATS.map((c) => <option key={c}>{c}</option>)}
+                </select>
+              </div>
+
+              {/* Photo upload */}
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>Photo <span style={{ fontWeight: 400, color: "#9189A0" }}>(optional)</span></label>
+                <div
+                  onDragOver={(e) => { e.preventDefault(); setPhotoDragOver(true); }}
+                  onDragLeave={() => setPhotoDragOver(false)}
+                  onDrop={handlePhotoDrop}
+                  onClick={() => fileRef.current?.click()}
+                  style={{
+                    border: `2px dashed ${photoDragOver ? "#E91E8C" : "#D4C8E8"}`,
+                    borderRadius: 10, padding: "20px 14px", textAlign: "center",
+                    cursor: "pointer", transition: "border-color 0.15s",
+                    background: photoDragOver ? "rgba(233,30,140,0.04)" : "#F9F5FC",
+                  }}
+                >
+                  <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) setPendingFile(f); }} />
+                  {pendingFile ? (
+                    <div>
+                      <div style={{ fontSize: 22, marginBottom: 6 }}>🖼</div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: "#4A2A6B" }}>{pendingFile.name}</div>
+                      <div style={{ fontSize: 11.5, color: "#9189A0", marginTop: 3 }}>{(pendingFile.size / 1024).toFixed(0)} KB — click to change</div>
+                    </div>
+                  ) : existingPhotoUrl ? (
+                    <div>
+                      <img src={existingPhotoUrl} alt="" style={{ width: 64, height: 64, objectFit: "cover", borderRadius: 8, marginBottom: 6 }} />
+                      <div style={{ fontSize: 11.5, color: "#9189A0" }}>Click to replace photo</div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div style={{ fontSize: 24, marginBottom: 6, color: "#C9BBD6" }}>↑</div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: "#6B6473" }}>Drag & drop or click to select</div>
+                      <div style={{ fontSize: 11.5, color: "#9189A0", marginTop: 3 }}>Leave empty to use gradient placeholder</div>
+                    </div>
+                  )}
                 </div>
               </div>
+
               <div style={{ marginBottom: 16 }}>
                 <label style={labelStyle}>Impact Statement</label>
                 <textarea value={impact} onChange={(e) => setImpact(e.target.value)} rows={3} style={{ ...inputStyle, resize: "vertical" }} />
@@ -175,8 +243,8 @@ export default function SpotlightManager() {
               </div>
               {saveError && <div style={{ fontSize: 13, color: "#E11D48", marginBottom: 14 }}>{saveError}</div>}
               <div style={{ display: "flex", gap: 12 }}>
-                <button type="submit" disabled={saving} style={{ flex: 1, background: "#E91E8C", color: "#fff", border: "none", borderRadius: 10, padding: "15px", fontSize: 15, fontWeight: 600, cursor: "pointer", opacity: saving ? 0.7 : 1 }}>
-                  {saving ? "Saving…" : "Save Spotlight"}
+                <button type="submit" disabled={saving || photoUploading} style={{ flex: 1, background: "#E91E8C", color: "#fff", border: "none", borderRadius: 10, padding: "15px", fontSize: 15, fontWeight: 600, cursor: "pointer", opacity: saving || photoUploading ? 0.7 : 1 }}>
+                  {photoUploading ? "Uploading photo…" : saving ? "Saving…" : "Save Spotlight"}
                 </button>
                 <button type="button" onClick={closePanel} style={{ padding: "15px 20px", background: "#F4ECF8", color: "#4A2A6B", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: "pointer" }}>
                   Cancel

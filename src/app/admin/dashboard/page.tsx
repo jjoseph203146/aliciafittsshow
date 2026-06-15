@@ -81,13 +81,13 @@ export default async function DashboardPage() {
               {(recentSubs as Submission[]).map((sub) => {
                 const sc = SUB_STATUS[sub.status] ?? SUB_STATUS.new;
                 return (
-                  <div key={sub.id} style={{ padding: "13px 22px", borderBottom: "1px solid #F9F5FC", display: "flex", alignItems: "center", gap: 12 }}>
+                  <Link key={sub.id} href="/admin/submissions" style={{ padding: "13px 22px", borderBottom: "1px solid #F9F5FC", display: "flex", alignItems: "center", gap: 12, textDecoration: "none", cursor: "pointer" }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13.5, fontWeight: 600, color: "#4A2A6B", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{sub.full_name}</div>
                       <div style={{ fontSize: 12, color: "#9189A0" }}>{sub.email}</div>
                     </div>
                     <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.06em", color: sc.color, background: sc.bg, borderRadius: 999, padding: "4px 10px", flexShrink: 0 }}>{sub.status}</span>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
@@ -107,13 +107,13 @@ export default async function DashboardPage() {
               {(recentNoms as Nomination[]).map((nom) => {
                 const nc = NOM_STATUS[nom.status] ?? NOM_STATUS.new;
                 return (
-                  <div key={nom.id} style={{ padding: "13px 22px", borderBottom: "1px solid #F9F5FC", display: "flex", alignItems: "center", gap: 12 }}>
+                  <Link key={nom.id} href="/admin/nominations" style={{ padding: "13px 22px", borderBottom: "1px solid #F9F5FC", display: "flex", alignItems: "center", gap: 12, textDecoration: "none", cursor: "pointer" }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13.5, fontWeight: 600, color: "#4A2A6B", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{nom.nominee_name}</div>
                       <div style={{ fontSize: 12, color: "#9189A0" }}>by {nom.nominator_name}</div>
                     </div>
                     <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.06em", color: nc.color, background: nc.bg, borderRadius: 999, padding: "4px 10px", flexShrink: 0 }}>{nom.status}</span>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
