@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Playfair_Display, Pinyon_Script } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -45,9 +43,7 @@ export default function RootLayout({
       className={`${dmSans.variable} ${playfairDisplay.variable} ${pinyonScript.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
