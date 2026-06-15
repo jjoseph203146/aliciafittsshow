@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
+const WEB3FORMS_KEY = "209f024d-8c10-41fc-9c1b-b426d54460de";
 const PF = "var(--font-playfair), serif";
 const inputStyle: React.CSSProperties = { width: "100%", border: "1.5px solid #E6E1EC", borderRadius: 10, padding: "13px 15px", fontSize: 14.5, boxSizing: "border-box" };
 const labelStyle: React.CSSProperties = { display: "block", fontSize: 13, fontWeight: 600, color: "#4A2A6B", marginBottom: 7 };
@@ -24,7 +25,8 @@ export default function BeOnTheShowForms() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const { error: err } = await supabase.from("submissions").insert({
+
+    const { error: dbErr } = await supabase.from("submissions").insert({
       full_name: fullName,
       email,
       phone: phone || null,
@@ -32,11 +34,35 @@ export default function BeOnTheShowForms() {
       story,
       heard_from: heard || null,
     });
-    if (err) {
+
+    if (dbErr) {
       setError("Something went wrong. Please try again.");
-    } else {
-      setDone(true);
+      setLoading(false);
+      return;
     }
+
+    // Email notification via Web3Forms (fire-and-forget — don't block success on it)
+    try {
+      await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: "New Be on the Show Submission",
+          from_name: "Good News in the CSRA Website",
+          name: fullName,
+          email,
+          phone: phone || "Not provided",
+          organization: org || "Not provided",
+          story,
+          heard_from: heard,
+        }),
+      });
+    } catch {
+      // silently ignore email errors — record already saved to Supabase
+    }
+
+    setDone(true);
     setLoading(false);
   }
 
@@ -62,7 +88,7 @@ export default function BeOnTheShowForms() {
     <form onSubmit={handleSubmit} style={{ background: "#fff", border: "1px solid #EFE6F5", borderRadius: 20, padding: 40, boxShadow: "0 20px 52px rgba(74,42,107,0.1)" }}>
       <h2 style={{ fontFamily: PF, fontWeight: 800, fontSize: 28, color: "#4A2A6B", margin: "0 0 6px" }}>Tell Us About Yourself</h2>
       <p style={{ fontSize: 14.5, color: "#9189A0", margin: "0 0 28px" }}>Fields marked with * are required.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+      <div className="rsp-form-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
         <div>
           <label style={labelStyle}>Full Name *</label>
           <input required value={fullName} onChange={(e) => setFullName(e.target.value)} style={inputStyle} />
@@ -95,7 +121,7 @@ export default function BeOnTheShowForms() {
         </select>
       </div>
       {error && <p style={{ color: "#E11D48", fontSize: 14, marginTop: 14 }}>{error}</p>}
-      <button type="submit" disabled={loading} style={{ marginTop: 26, width: "100%", background: "#E91E8C", color: "#fff", border: "none", borderRadius: 12, padding: 17, fontSize: 16, fontWeight: 600, cursor: "pointer", boxShadow: "0 10px 28px rgba(233,30,140,0.3)", opacity: loading ? 0.7 : 1 }}>
+      <button type="submit" disabled={loading} style={{ marginTop: 26, width: "100%", background: "#E91E8C", color: "#fff", border: "none", borderRadius: 12, padding: 17, fontSize: 16, fontWeight: 600, cursor: "pointer", boxShadow: "0 10px 28px rgba(233,30,140,0.3)", opacity: loading ? 0.7 : 1, minHeight: 54 }}>
         {loading ? "Submitting…" : "Submit My Story"}
       </button>
     </form>

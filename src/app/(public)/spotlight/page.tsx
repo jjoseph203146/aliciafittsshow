@@ -44,7 +44,7 @@ export default async function SpotlightPage() {
       <section style={{ background: "#1A0A2E" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "64px 32px" }}>
           <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "#E91E8C", marginBottom: 16 }}>COMMUNITY</div>
-          <h1 style={{ fontFamily: PF, fontWeight: 800, fontSize: 54, color: "#fff", margin: "0 0 12px", letterSpacing: "-0.01em" }}>CSRA Spotlight</h1>
+          <h1 className="rsp-h1-md" style={{ fontFamily: PF, fontWeight: 800, fontSize: 54, color: "#fff", margin: "0 0 12px", letterSpacing: "-0.01em" }}>CSRA Spotlight</h1>
           <p style={{ fontSize: 18, color: "#F8A5C8", margin: 0, maxWidth: 620 }}>Celebrating the people and organizations making a difference in our community.</p>
         </div>
       </section>
@@ -52,7 +52,7 @@ export default async function SpotlightPage() {
       {/* ── Featured ── */}
       <section style={{ background: "#fff" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "66px 32px" }}>
-          <div style={{ border: "1px solid #F0EAF6", borderRadius: 22, overflow: "hidden", display: "grid", gridTemplateColumns: "0.95fr 1.05fr", boxShadow: "0 20px 52px rgba(74,42,107,0.1)" }}>
+          <div className="rsp-2col" style={{ border: "1px solid #F0EAF6", borderRadius: 22, overflow: "hidden", display: "grid", gridTemplateColumns: "0.95fr 1.05fr", boxShadow: "0 20px 52px rgba(74,42,107,0.1)" }}>
             <div style={{ background: "linear-gradient(150deg,#6B3F8F,#241B33)", minHeight: 420, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
               {featured?.photo_url ? (
                 <img src={featured.photo_url} alt={featured.name} style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }} />
@@ -100,7 +100,7 @@ export default async function SpotlightPage() {
             <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.18em", color: "#E91E8C", marginBottom: 12 }}>COMMUNITY HEROES</div>
             <h2 style={{ fontFamily: PF, fontWeight: 800, fontSize: 40, color: "#4A2A6B", margin: 0 }}>More Spotlights</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 26 }}>
+          <div className="rsp-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 26 }}>
             {usingPlaceholderGrid
               ? PLACEHOLDER_SPOTLIGHTS.map((sp) => (
                   <div key={sp.id} style={{ background: "#fff", borderRadius: 18, overflow: "hidden", boxShadow: "0 12px 32px rgba(74,42,107,0.07)" }}>

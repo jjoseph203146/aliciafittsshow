@@ -40,6 +40,7 @@ export default async function HomePage() {
           }}
         />
         <div
+          className="rsp-2col rsp-px"
           style={{
             maxWidth: 1240,
             margin: "0 auto",
@@ -65,6 +66,7 @@ export default async function HomePage() {
               COMMUNITY · FINANCE · EMPOWERMENT
             </div>
             <h1
+              className="rsp-h1"
               style={{
                 fontFamily: "var(--font-playfair), serif",
                 fontWeight: 800,
@@ -102,7 +104,7 @@ export default async function HomePage() {
               hear — hosted by Alicia Fitts, speaker, consultant, and community
               advocate.
             </p>
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <div className="rsp-btn-group" style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
               <Link
                 href="/episodes"
                 style={{
@@ -198,6 +200,7 @@ export default async function HomePage() {
       {/* ── Section 2: Features ── */}
       <section style={{ background: "#fff" }}>
         <div
+          className="rsp-3col rsp-px"
           style={{
             maxWidth: 1240,
             margin: "0 auto",
@@ -344,6 +347,7 @@ export default async function HomePage() {
             }}
           >
             <h2
+              className="rsp-h2-md"
               style={{
                 fontFamily: "var(--font-playfair), serif",
                 fontWeight: 800,
@@ -369,6 +373,7 @@ export default async function HomePage() {
           </div>
 
           <div
+            className="rsp-3col"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(3,1fr)",
@@ -455,7 +460,6 @@ export default async function HomePage() {
                         margin: "0 0 10px",
                       }}
                     >
-                      {ep.episode_number ? `Episode ${ep.episode_number} – ` : ""}
                       {ep.title}
                     </h3>
                     {ep.guest_name && (
@@ -590,6 +594,7 @@ export default async function HomePage() {
       {/* ── Section 4: Meet Your Host ── */}
       <section style={{ background: "#fff" }}>
         <div
+          className="rsp-2col rsp-px"
           style={{
             maxWidth: 1240,
             margin: "0 auto",
@@ -634,6 +639,7 @@ export default async function HomePage() {
               MEET YOUR HOST
             </div>
             <h2
+              className="rsp-h2-lg"
               style={{
                 fontFamily: "var(--font-playfair), serif",
                 fontWeight: 800,
@@ -696,6 +702,7 @@ export default async function HomePage() {
               COMMUNITY SPOTLIGHT
             </div>
             <h2
+              className="rsp-h2-md"
               style={{
                 fontFamily: "var(--font-playfair), serif",
                 fontWeight: 800,
@@ -710,6 +717,7 @@ export default async function HomePage() {
           </div>
 
           <div
+            className="rsp-3col"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(3,1fr)",

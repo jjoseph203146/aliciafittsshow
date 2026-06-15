@@ -13,6 +13,14 @@ const STATUS_STYLE: Record<Nomination["status"], { bg: string; color: string }> 
   declined: { bg: "#FCE7EC", color: "#E11D48" },
 };
 
+function TrashIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M2 3.5h10M5.5 3.5V2.5h3v1M4 3.5l.6 8h4.8l.6-8" stroke="#E11D48" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 function NominationCard({
   nom,
   expanded,
@@ -20,6 +28,7 @@ function NominationCard({
   onUpdateStatus,
   onDecline,
   onRestore,
+  onDelete,
   isDeclined,
 }: {
   nom: Nomination;
@@ -28,6 +37,7 @@ function NominationCard({
   onUpdateStatus: (id: string, status: Nomination["status"]) => void;
   onDecline: (id: string) => void;
   onRestore: (id: string) => void;
+  onDelete: (id: string, name: string) => void;
   isDeclined: boolean;
 }) {
   const sc = STATUS_STYLE[nom.status];
@@ -63,6 +73,12 @@ function NominationCard({
               Restore
             </button>
           )}
+          {/* Permanent delete */}
+          <button onClick={(e) => { e.stopPropagation(); onDelete(nom.id, nom.nominee_name); }}
+            title="Permanently delete"
+            style={{ background: "#FCE7EC", border: "none", borderRadius: 8, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0 }}>
+            <TrashIcon />
+          </button>
           <div style={{ fontSize: 18, color: "#C9BBD6", transform: expanded ? "rotate(180deg)" : "none", transition: "transform 0.2s", lineHeight: 1, alignSelf: "center" }}>⌄</div>
         </div>
       </div>
@@ -128,6 +144,12 @@ export default function NominationsManager() {
   function decline(id: string) { updateStatus(id, "declined"); }
   function restore(id: string) { updateStatus(id, "new"); }
 
+  async function permanentDelete(id: string, name: string) {
+    if (!confirm(`Permanently delete nomination for "${name}"? This cannot be undone.`)) return;
+    await supabase.from("nominations").delete().eq("id", id);
+    setNominations((prev) => prev.filter((n) => n.id !== id));
+  }
+
   const active = nominations.filter((n) => n.status !== "declined");
   const declined = nominations.filter((n) => n.status === "declined");
 
@@ -146,7 +168,6 @@ export default function NominationsManager() {
         <div style={{ background: "#fff", borderRadius: 16, padding: "48px", textAlign: "center", color: "#9189A0", fontStyle: "italic", fontSize: 14, boxShadow: "0 8px 24px rgba(74,42,107,0.06)" }}>No nominations yet.</div>
       ) : (
         <>
-          {/* Active nominations */}
           {active.length === 0 ? (
             <div style={{ background: "#fff", borderRadius: 16, padding: "32px", textAlign: "center", color: "#9189A0", fontStyle: "italic", fontSize: 14, boxShadow: "0 8px 24px rgba(74,42,107,0.06)", marginBottom: 16 }}>All nominations have been reviewed.</div>
           ) : (
@@ -159,13 +180,13 @@ export default function NominationsManager() {
                   onUpdateStatus={updateStatus}
                   onDecline={decline}
                   onRestore={restore}
+                  onDelete={permanentDelete}
                   isDeclined={false}
                 />
               ))}
             </div>
           )}
 
-          {/* Declined section */}
           {declined.length > 0 && (
             <div>
               <div style={{ borderTop: "1px solid #E6E1EC", marginBottom: 16 }} />
@@ -186,6 +207,7 @@ export default function NominationsManager() {
                       onUpdateStatus={updateStatus}
                       onDecline={decline}
                       onRestore={restore}
+                      onDelete={permanentDelete}
                       isDeclined={true}
                     />
                   ))}

@@ -25,9 +25,7 @@ const PLACEHOLDER_EPISODES: Episode[] = [
 function EpisodeThumbnail({ videoId, title }: { videoId: string; title: string }) {
   const [src, setSrc] = useState(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`);
   if (!videoId) {
-    return (
-      <div style={{ width: "100%", height: "100%", background: "linear-gradient(135deg,#3A2456,#241B33)", position: "absolute", inset: 0 }} />
-    );
+    return <div style={{ width: "100%", height: "100%", background: "linear-gradient(135deg,#3A2456,#241B33)", position: "absolute", inset: 0 }} />;
   }
   return (
     <img
@@ -48,8 +46,12 @@ function VideoModal({ videoId, onClose }: { videoId: string; onClose: () => void
 
   return (
     <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 90, background: "rgba(10,4,20,0.94)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <button onClick={onClose} style={{ position: "absolute", top: 22, right: 26, width: 44, height: 44, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.3)", background: "none", color: "#fff", fontSize: 20, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
-      <div onClick={(e) => e.stopPropagation()} style={{ width: "min(900px,90vw)", aspectRatio: "16/9", borderRadius: 14, overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,0.7)" }}>
+      <button
+        className="rsp-modal-close"
+        onClick={onClose}
+        style={{ position: "absolute", top: 22, right: 26, width: 44, height: 44, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.3)", background: "none", color: "#fff", fontSize: 20, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+      >✕</button>
+      <div onClick={(e) => e.stopPropagation()} style={{ width: "min(900px,92vw)", aspectRatio: "16/9", borderRadius: 14, overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,0.7)" }}>
         <iframe
           src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -94,7 +96,7 @@ export default function EpisodesClient({ episodes }: { episodes: Episode[] }) {
 
       {/* ── Search ── */}
       <section style={{ background: "#fff" }}>
-        <div style={{ maxWidth: 680, margin: "0 auto", padding: "44px 32px 8px", textAlign: "center" }}>
+        <div className="rsp-px" style={{ maxWidth: 680, margin: "0 auto", padding: "44px 32px 8px", textAlign: "center" }}>
           <div style={{ position: "relative" }}>
             <svg style={{ position: "absolute", left: 18, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} width="18" height="18" viewBox="0 0 18 18" fill="none">
               <circle cx="7.5" cy="7.5" r="5.5" stroke="#C2557A" strokeWidth="1.8"/>
@@ -114,8 +116,7 @@ export default function EpisodesClient({ episodes }: { episodes: Episode[] }) {
       {/* ── Featured Episode ── */}
       {featured && (
         <section style={{ background: "#fff" }}>
-          <div style={{ maxWidth: 1240, margin: "0 auto", padding: "40px 32px 20px", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 44, alignItems: "center" }}>
-            {/* Thumbnail with play overlay */}
+          <div className="rsp-2col rsp-px" style={{ maxWidth: 1240, margin: "0 auto", padding: "40px 32px 20px", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 44, alignItems: "center" }}>
             <div
               onClick={() => play(featured.youtube_id)}
               style={{ aspectRatio: "16/9", borderRadius: 18, overflow: "hidden", position: "relative", boxShadow: "0 20px 48px rgba(36,27,51,0.25)", cursor: featured.youtube_id ? "pointer" : "default", background: "linear-gradient(135deg,#3A2456,#1A0A2E)" }}
@@ -146,7 +147,7 @@ export default function EpisodesClient({ episodes }: { episodes: Episode[] }) {
               {featured.description && <p style={{ fontSize: 16, lineHeight: 1.7, color: "#6B6473", margin: "0 0 14px" }}>{featured.description}</p>}
               {featured.guest_name && <div style={{ fontSize: 14, color: "#E91E8C", fontWeight: 600, marginBottom: 22 }}>with {featured.guest_name}</div>}
               {featured.youtube_id ? (
-                <button onClick={() => play(featured.youtube_id)} style={{ background: "#E91E8C", color: "#fff", border: "none", borderRadius: 999, padding: "15px 30px", fontSize: 15, fontWeight: 600, cursor: "pointer", boxShadow: "0 10px 28px rgba(233,30,140,0.3)" }}>
+                <button onClick={() => play(featured.youtube_id)} style={{ background: "#E91E8C", color: "#fff", border: "none", borderRadius: 999, padding: "15px 30px", fontSize: 15, fontWeight: 600, cursor: "pointer", boxShadow: "0 10px 28px rgba(233,30,140,0.3)", minHeight: 52 }}>
                   Watch Now
                 </button>
               ) : (
@@ -159,9 +160,9 @@ export default function EpisodesClient({ episodes }: { episodes: Episode[] }) {
 
       {/* ── Category Filters ── */}
       <section style={{ background: "#F7F2FB" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "30px 32px", display: "flex", gap: 11, flexWrap: "wrap", justifyContent: "center" }}>
+        <div className="rsp-px" style={{ maxWidth: 1240, margin: "0 auto", padding: "30px 32px", display: "flex", gap: 11, flexWrap: "wrap", justifyContent: "center" }}>
           {FIXED_CATS.map((cat) => (
-            <button key={cat} onClick={() => setActiveFilter(cat)} style={{ ...(activeFilter === cat ? FILTER_ACTIVE : FILTER_IDLE), borderRadius: 999, padding: "10px 20px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            <button key={cat} onClick={() => setActiveFilter(cat)} style={{ ...(activeFilter === cat ? FILTER_ACTIVE : FILTER_IDLE), borderRadius: 999, padding: "10px 20px", fontSize: 14, fontWeight: 600, cursor: "pointer", minHeight: 44 }}>
               {cat}
             </button>
           ))}
@@ -170,16 +171,15 @@ export default function EpisodesClient({ episodes }: { episodes: Episode[] }) {
 
       {/* ── Episode Grid ── */}
       <section style={{ background: "#fff" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "50px 32px 70px" }}>
+        <div className="rsp-px" style={{ maxWidth: 1240, margin: "0 auto", padding: "50px 32px 70px" }}>
           {visible.length > 0 ? (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 26 }}>
+            <div className="rsp-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 26 }}>
               {visible.map((ep) => (
                 <div
                   key={ep.id}
                   onClick={() => play(ep.youtube_id)}
                   style={{ background: "#fff", border: "1px solid #F0EAF6", borderRadius: 18, overflow: "hidden", boxShadow: "0 10px 28px rgba(74,42,107,0.06)", cursor: ep.youtube_id ? "pointer" : "default", display: "block" }}
                 >
-                  {/* Thumbnail */}
                   <div style={{ aspectRatio: "16/9", position: "relative", background: "linear-gradient(135deg,#3A2456,#241B33)", overflow: "hidden" }}>
                     {ep.youtube_id && <EpisodeThumbnail videoId={ep.youtube_id} title={ep.title} />}
                     <div style={{ position: "absolute", inset: 0, background: ep.youtube_id ? "rgba(0,0,0,0.18)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center" }}>

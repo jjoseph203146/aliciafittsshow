@@ -13,20 +13,20 @@ export default function AboutPage() {
     <>
       {/* ── Header ── */}
       <section style={{ background: "#F7F2FB" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "64px 32px" }}>
+        <div className="rsp-px rsp-py" style={{ maxWidth: 1240, margin: "0 auto", padding: "64px 32px" }}>
           <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "#E91E8C", marginBottom: 16 }}>OUR STORY</div>
-          <h1 style={{ fontFamily: PF, fontWeight: 800, fontSize: 54, color: "#4A2A6B", margin: "0 0 12px", letterSpacing: "-0.01em" }}>Meet Alicia Fitts</h1>
+          <h1 className="rsp-h1-md" style={{ fontFamily: PF, fontWeight: 800, fontSize: 54, color: "#4A2A6B", margin: "0 0 12px", letterSpacing: "-0.01em" }}>Meet Alicia Fitts</h1>
           <p style={{ fontSize: 18, color: "#6B6473", margin: 0 }}>Speaker. Consultant. Community Advocate.</p>
         </div>
       </section>
 
       {/* ── Bio ── */}
       <section style={{ background: "#fff" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "80px 32px", display: "grid", gridTemplateColumns: "0.9fr 1.1fr", gap: 56, alignItems: "start" }}>
+        <div className="rsp-2col rsp-px rsp-py" style={{ maxWidth: 1240, margin: "0 auto", padding: "80px 32px", display: "grid", gridTemplateColumns: "0.9fr 1.1fr", gap: 56, alignItems: "start" }}>
           <div style={{ borderRadius: 20, overflow: "hidden", border: "6px solid #F4ECF8", boxShadow: "0 24px 56px rgba(74,42,107,0.16)", aspectRatio: "3/4", background: "linear-gradient(150deg,#6B3F8F,#3A2456)" }} />
           <div>
             <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "#E91E8C", marginBottom: 16 }}>ABOUT YOUR HOST</div>
-            <h2 style={{ fontFamily: PF, fontWeight: 800, fontSize: 40, color: "#4A2A6B", margin: "0 0 22px" }}>Alicia Fitts</h2>
+            <h2 className="rsp-h2-md" style={{ fontFamily: PF, fontWeight: 800, fontSize: 40, color: "#4A2A6B", margin: "0 0 22px" }}>Alicia Fitts</h2>
             <p style={{ fontSize: 16.5, lineHeight: 1.72, color: "#6B6473", margin: "0 0 16px" }}>For years, Alicia helped families and small businesses across the CSRA make sense of their finances. Along the way, she kept meeting people doing extraordinary, quiet good — stories that never made the evening news.</p>
             <p style={{ fontSize: 16.5, lineHeight: 1.72, color: "#6B6473", margin: "0 0 16px" }}>So she built a show for them. <em>Good News in the CSRA</em> is her answer to a media landscape that too often overlooks the generosity, grit, and goodness already here in Augusta and beyond.</p>
             <p style={{ fontSize: 16.5, lineHeight: 1.72, color: "#6B6473", margin: "0 0 26px" }}>When she isn&apos;t behind the camera, Alicia speaks and consults on financial empowerment, helping people build the kind of stability that lets them give back.</p>
@@ -45,12 +45,12 @@ export default function AboutPage() {
 
       {/* ── About the Show ── */}
       <section style={{ background: "#F7F2FB" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "78px 32px" }}>
+        <div className="rsp-px rsp-py" style={{ maxWidth: 1240, margin: "0 auto", padding: "78px 32px" }}>
           <div style={{ textAlign: "center", maxWidth: 620, margin: "0 auto 46px" }}>
             <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "#E91E8C", marginBottom: 14 }}>THE SHOW</div>
-            <h2 style={{ fontFamily: PF, fontWeight: 800, fontSize: 40, color: "#4A2A6B", margin: 0, letterSpacing: "-0.01em" }}>About Good News in the CSRA</h2>
+            <h2 className="rsp-h2-md" style={{ fontFamily: PF, fontWeight: 800, fontSize: 40, color: "#4A2A6B", margin: 0, letterSpacing: "-0.01em" }}>About Good News in the CSRA</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 50, alignItems: "center" }}>
+          <div className="rsp-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 50, alignItems: "center" }}>
             <div>
               <h3 style={{ fontFamily: PF, fontWeight: 700, fontSize: 24, color: "#4A2A6B", margin: "0 0 10px" }}>Our Mission</h3>
               <p style={{ fontSize: 16, lineHeight: 1.7, color: "#6B6473", margin: "0 0 28px" }}>To bring the positive stories of our region forward — the people, nonprofits, and small businesses making the CSRA a better place to live, work, and grow.</p>
@@ -71,8 +71,8 @@ export default function AboutPage() {
 
       {/* ── Values ── */}
       <section style={{ background: "#fff" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "78px 32px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 22 }}>
+        <div className="rsp-px rsp-py" style={{ maxWidth: 1240, margin: "0 auto", padding: "78px 32px" }}>
+          <div className="rsp-4col" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 22 }}>
             {[
               { t: "Authenticity", d: "Real stories, real people. We don't manufacture good news — we find it." },
               { t: "Community", d: "The CSRA is our home. Every story we tell serves our neighbors first." },
@@ -93,8 +93,8 @@ export default function AboutPage() {
 
       {/* ── Speaker / Consultant ── */}
       <section style={{ background: "#1A0A2E" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "80px 32px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 44, marginBottom: 44 }}>
+        <div className="rsp-px rsp-py" style={{ maxWidth: 1240, margin: "0 auto", padding: "80px 32px" }}>
+          <div className="rsp-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 44, marginBottom: 44 }}>
             <div>
               <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "rgba(255,255,255,0.7)", marginBottom: 16 }}>SPEAKER</div>
               <div style={{ borderRadius: 18, overflow: "hidden", marginBottom: 22, boxShadow: "0 24px 56px rgba(0,0,0,0.4)", aspectRatio: "4/3", background: "linear-gradient(150deg,#6B3F8F,#1A0A2E)" }} />

@@ -1,6 +1,25 @@
 # Good News in the CSRA — Build Progress
 
-`npx next build` passes clean as of 2026-06-15.
+`npx next build` passes clean as of 2026-06-15 (latest pass).
+
+## Fixes — 2026-06-15 (pass 5)
+
+### Files modified
+| File | Change |
+|------|--------|
+| `src/app/globals.css` | Added responsive CSS utilities (`rsp-*` classes with `!important`) for 2-col, 3-col, 4-col grids; footer; masonry; headings; steps connector; form grids; button groups; modal close; `overflow-x: hidden` on body |
+| `src/components/Navbar.tsx` | Burger button size 40→44px (minimum tap target) |
+| `src/components/Footer.tsx` | Added `rsp-footer rsp-px` classes — stacks to 2-col on tablet, 1-col on mobile |
+| `src/components/NominationForm.tsx` | Added Web3Forms POST (subject: "New Spotlight Nomination"); mobile `rsp-form-2col` on name/email grid |
+| `src/app/(public)/page.tsx` | Added `rsp-*` classNames to: hero grid (`rsp-2col`), H1 (`rsp-h1`), CTA buttons (`rsp-btn-group`), features grid (`rsp-3col`), episodes grid (`rsp-3col`), "Latest Episodes" H2 (`rsp-h2-md`), host grid (`rsp-2col`), "Alicia Fitts" H2 (`rsp-h2-lg`), spotlight H2 (`rsp-h2-md`), spotlight grid (`rsp-3col`). Fixed `ep.episode_number` TypeScript error. |
+| `src/app/(public)/about/page.tsx` | Rewrote with `rsp-*` classNames throughout — all multi-col grids stack on mobile, headlines scale down |
+| `src/app/(public)/episodes/EpisodesClient.tsx` | Added `rsp-2col` on featured grid, `rsp-3col` on episode grid, `rsp-modal-close` on VideoModal close button, `rsp-px` on section padding, `minHeight: 44` on filter buttons |
+| `src/app/(public)/photos/PhotosClient.tsx` | Added `rsp-masonry` class on masonry container (3→2→1 col), `rsp-px` on sections, larger lightbox close/arrow buttons |
+| `src/app/(public)/spotlight/page.tsx` | Added `rsp-h1-md` on H1, `rsp-2col` on featured card grid, `rsp-3col` on spotlight grid |
+| `src/app/(public)/be-on-the-show/page.tsx` | Rewrote with `rsp-*` classNames — intro grid, steps grid (`rsp-steps`), connector line (`rsp-steps-line`), testimonials grid; photo placeholder hides on mobile (`rsp-hide`) |
+| `src/app/(public)/be-on-the-show/BeOnTheShowForms.tsx` | Added Web3Forms POST (subject: "New Be on the Show Submission"); mobile `rsp-form-2col` on 2-col name/email/phone/org grid |
+| `src/app/admin/submissions/SubmissionsManager.tsx` | Added permanent delete (trash icon button + confirm dialog) on each card in both active and rejected sections |
+| `src/app/admin/nominations/NominationsManager.tsx` | Added permanent delete (trash icon button + confirm dialog) on each card in both active and declined sections |
 
 ## Files Created or Modified
 

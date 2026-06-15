@@ -78,3 +78,94 @@ select:focus {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ═══════════════════════════════════════════
+   Responsive Utilities — !important overrides
+   inline styles so these work everywhere
+   ═══════════════════════════════════════════ */
+
+/* 2-column → 1-column on mobile */
+@media (max-width: 768px) {
+  .rsp-2col { grid-template-columns: 1fr !important; gap: 32px !important; }
+}
+
+/* 3-column → 2-col tablet, 1-col mobile */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .rsp-3col { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 768px) {
+  .rsp-3col { grid-template-columns: 1fr !important; gap: 20px !important; }
+}
+
+/* 4-column → 2-col mobile, 1-col small */
+@media (max-width: 768px) {
+  .rsp-4col { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
+}
+@media (max-width: 480px) {
+  .rsp-4col { grid-template-columns: 1fr !important; }
+}
+
+/* Footer 4-col responsive */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .rsp-footer { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 768px) {
+  .rsp-footer { grid-template-columns: 1fr !important; gap: 32px !important; }
+}
+
+/* Section padding */
+@media (max-width: 768px) {
+  .rsp-px { padding-left: 20px !important; padding-right: 20px !important; }
+  .rsp-py { padding-top: 44px !important; padding-bottom: 44px !important; }
+}
+
+/* Headline scale-down */
+@media (max-width: 768px) {
+  .rsp-h1    { font-size: 36px !important; line-height: 1.12 !important; }
+  .rsp-h1-md { font-size: 32px !important; line-height: 1.15 !important; }
+  .rsp-h2-lg { font-size: 30px !important; }
+  .rsp-h2-md { font-size: 28px !important; }
+  .rsp-h2-sm { font-size: 24px !important; }
+}
+
+/* Steps 3-col → 1-col, hide connector line */
+@media (max-width: 768px) {
+  .rsp-steps      { grid-template-columns: 1fr !important; gap: 36px !important; }
+  .rsp-steps-line { display: none !important; }
+}
+
+/* Form 2-col → 1-col on phones */
+@media (max-width: 640px) {
+  .rsp-form-2col { grid-template-columns: 1fr !important; }
+}
+
+/* Masonry columns */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .rsp-masonry { column-count: 2 !important; }
+}
+@media (max-width: 768px) {
+  .rsp-masonry { column-count: 2 !important; }
+}
+@media (max-width: 480px) {
+  .rsp-masonry { column-count: 1 !important; }
+}
+
+/* CTA button group — stack on small phones */
+@media (max-width: 580px) {
+  .rsp-btn-group { flex-direction: column !important; align-items: stretch !important; }
+  .rsp-btn-group > a,
+  .rsp-btn-group > button { text-align: center !important; width: 100% !important; }
+}
+
+/* Video modal close — bigger tap target on mobile */
+@media (max-width: 768px) {
+  .rsp-modal-close { top: 12px !important; right: 14px !important; width: 52px !important; height: 52px !important; font-size: 26px !important; }
+}
+
+/* Hide on mobile */
+@media (max-width: 768px) {
+  .rsp-hide { display: none !important; }
+}
+
+/* Prevent viewport overflow */
+body { overflow-x: hidden; }
