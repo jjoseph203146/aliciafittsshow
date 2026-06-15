@@ -112,7 +112,13 @@ export default function PhotosManager() {
             </div>
             <div>
               <label style={labelStyle}>Category</label>
-              <input value={category} onChange={(e) => setCategory(e.target.value)} style={inputStyle} placeholder="e.g. Behind the Scenes" />
+              <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ ...inputStyle, background: "#fff", color: category ? "#3A2A4D" : "#9189A0" }}>
+                <option value="">Select category…</option>
+                <option value="Show">Show</option>
+                <option value="Events">Events</option>
+                <option value="Community">Community</option>
+                <option value="Guests">Guests</option>
+              </select>
             </div>
           </div>
           {uploadError && <div style={{ fontSize: 13, color: "#E11D48", marginBottom: 14 }}>{uploadError}</div>}

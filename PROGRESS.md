@@ -68,6 +68,27 @@ All routes verified in build output:
 - `/admin/submissions` — expandable cards
 - `/admin/nominations` — expandable cards
 
+## Fixes — 2026-06-15 (pass 3)
+
+### Files modified
+| File | Change |
+|------|--------|
+| `src/app/admin/photos/PhotosManager.tsx` | Category field changed from free-text input to `<select>` with fixed options: Show, Events, Community, Guests |
+| `src/app/(public)/spotlight/page.tsx` | Fixed placeholder logic: grid placeholders now only show when `spotlights.length === 0` (not when `grid.length === 0`). When any real spotlight exists, only real content shows. Grid section hidden entirely when real data exists but all spotlights are the featured card (no mixing) |
+
+### Confirmed correct (no changes needed)
+| Page | Status |
+|------|--------|
+| `/` (home) — episodes section | ✅ Already uses `episodes.length > 0 ? real : placeholders` |
+| `/` (home) — spotlight section | ✅ Already uses `spotlights.length > 0 ? real : placeholders` |
+| `/episodes` | ✅ Already uses `episodes.length === 0` to switch to placeholder array |
+| `/photos` | ✅ Already uses `photos.length === 0` to switch to placeholder array |
+
+### Placeholder rule (applied consistently across all pages)
+- Zero real records → show placeholders only
+- One or more real records → show real content only, no placeholders mixed in
+- Real content deleted back to zero → placeholders automatically return
+
 ## Fixes — 2026-06-15 (pass 2)
 
 ### Files modified

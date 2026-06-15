@@ -32,7 +32,11 @@ export default async function SpotlightPage() {
 
   const featured = spotlights?.find((s: Spotlight) => s.is_featured) ?? spotlights?.[0] ?? null;
   const grid = spotlights?.filter((s: Spotlight) => s.id !== featured?.id) ?? [];
-  const usingPlaceholderGrid = grid.length === 0;
+  const hasRealData = (spotlights?.length ?? 0) > 0;
+  // Placeholders show only when the table has zero published records.
+  // When any real data exists, show only real cards (even if grid is empty).
+  const usingPlaceholderGrid = !hasRealData;
+  const showGridSection = usingPlaceholderGrid || grid.length > 0;
 
   return (
     <>
@@ -90,7 +94,7 @@ export default async function SpotlightPage() {
       </section>
 
       {/* ── Grid ── */}
-      <section style={{ background: "#F7F2FB" }}>
+      {showGridSection && <section style={{ background: "#F7F2FB" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "70px 32px" }}>
           <div style={{ textAlign: "center", marginBottom: 46 }}>
             <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.18em", color: "#E91E8C", marginBottom: 12 }}>COMMUNITY HEROES</div>
@@ -138,7 +142,7 @@ export default async function SpotlightPage() {
                 ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* ── Nomination CTA ── */}
       <section style={{ background: "#1A0A2E" }}>
