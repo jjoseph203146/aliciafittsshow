@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { getEmbedUrl } from "@/lib/youtube";
+import { getWatchUrl } from "@/lib/youtube";
 import NewsletterForm from "@/components/NewsletterForm";
+import EpisodeThumbnail from "@/components/EpisodeThumbnail";
 
 export const dynamic = "force-dynamic";
 
@@ -157,6 +158,17 @@ export default async function HomePage() {
                 alignItems: "flex-end",
               }}
             >
+              <img
+                src="/images/hero-host.jpg"
+                alt="Alicia Fitts"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
               <div
                 style={{
                   position: "absolute",
@@ -384,7 +396,7 @@ export default async function HomePage() {
               episodes.map((ep) => (
                 <a
                   key={ep.id}
-                  href={ep.youtube_id ? getEmbedUrl(ep.youtube_id) : "#"}
+                  href={ep.youtube_id ? getWatchUrl(ep.youtube_id) : "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -405,10 +417,16 @@ export default async function HomePage() {
                       alignItems: "center",
                       justifyContent: "center",
                       position: "relative",
+                      overflow: "hidden",
                     }}
                   >
+                    {ep.youtube_id && <EpisodeThumbnail videoId={ep.youtube_id} title={ep.title} />}
+                    {ep.youtube_id && (
+                      <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.18)" }} />
+                    )}
                     <div
                       style={{
+                        position: "relative",
                         width: 60,
                         height: 60,
                         borderRadius: "50%",
@@ -616,6 +634,17 @@ export default async function HomePage() {
               background: "linear-gradient(150deg,#6B3F8F,#3A2456)",
             }}
           >
+            <img
+              src="/images/meet-your-host.jpg"
+              alt="Alicia Fitts"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
             <div
               style={{
                 position: "absolute",

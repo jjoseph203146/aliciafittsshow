@@ -48,7 +48,7 @@ export default function Navbar() {
           style={{
             maxWidth: 1240,
             margin: "0 auto",
-            height: 74,
+            height: 100,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -63,17 +63,7 @@ export default function Navbar() {
             href="/"
             style={{ cursor: "pointer", display: "flex", alignItems: "center", flexShrink: 0, textDecoration: "none", gap: 10 }}
           >
-            <span style={{ fontFamily: "var(--font-pinyon-script), cursive", fontSize: 40, lineHeight: 0.8, color: "#E91E8C", userSelect: "none" }}>
-              Af
-            </span>
-            <div style={{ lineHeight: 1.2 }}>
-              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.15em", color: "#9189A0", textTransform: "uppercase" }}>
-                Good News in the
-              </div>
-              <div style={{ fontFamily: "var(--font-playfair), serif", fontWeight: 700, fontSize: 13, letterSpacing: "0.1em", color: "#4A2A6B", textTransform: "uppercase" }}>
-                CSRA
-              </div>
-            </div>
+            <img src="/images/logo.png" alt="Good News in the CSRA" style={{ height: 90, width: "auto", display: "block" }} />
           </Link>
 
           {/* Desktop nav links */}

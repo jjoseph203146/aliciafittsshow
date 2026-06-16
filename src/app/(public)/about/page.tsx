@@ -23,7 +23,9 @@ export default function AboutPage() {
       {/* ── Bio ── */}
       <section style={{ background: "#fff" }}>
         <div className="rsp-2col rsp-px rsp-py" style={{ maxWidth: 1240, margin: "0 auto", padding: "80px 32px", display: "grid", gridTemplateColumns: "0.9fr 1.1fr", gap: 56, alignItems: "start" }}>
-          <div style={{ borderRadius: 20, overflow: "hidden", border: "6px solid #F4ECF8", boxShadow: "0 24px 56px rgba(74,42,107,0.16)", aspectRatio: "3/4", background: "linear-gradient(150deg,#6B3F8F,#3A2456)" }} />
+          <div style={{ borderRadius: 20, overflow: "hidden", border: "6px solid #F4ECF8", boxShadow: "0 24px 56px rgba(74,42,107,0.16)", aspectRatio: "3/4", background: "linear-gradient(150deg,#6B3F8F,#3A2456)" }}>
+            <img src="/images/about-host.jpg" alt="Alicia Fitts" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          </div>
           <div>
             <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "#E91E8C", marginBottom: 16 }}>ABOUT YOUR HOST</div>
             <h2 className="rsp-h2-md" style={{ fontFamily: PF, fontWeight: 800, fontSize: 40, color: "#4A2A6B", margin: "0 0 22px" }}>Alicia Fitts</h2>
@@ -97,12 +99,16 @@ export default function AboutPage() {
           <div className="rsp-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 44, marginBottom: 44 }}>
             <div>
               <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "rgba(255,255,255,0.7)", marginBottom: 16 }}>SPEAKER</div>
-              <div style={{ borderRadius: 18, overflow: "hidden", marginBottom: 22, boxShadow: "0 24px 56px rgba(0,0,0,0.4)", aspectRatio: "4/3", background: "linear-gradient(150deg,#6B3F8F,#1A0A2E)" }} />
+              <div style={{ borderRadius: 18, overflow: "hidden", marginBottom: 22, boxShadow: "0 24px 56px rgba(0,0,0,0.4)", aspectRatio: "4/3", background: "linear-gradient(150deg,#6B3F8F,#1A0A2E)" }}>
+                <img src="/images/speaking.png" alt="Alicia Fitts speaking" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }} />
+              </div>
               <p style={{ fontSize: 16, lineHeight: 1.7, color: "#CBBDD8", margin: 0 }}>Alicia brings warmth and clarity to every stage — from community keynotes to financial literacy workshops, she helps audiences feel both seen and equipped.</p>
             </div>
             <div>
               <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: "0.2em", color: "rgba(255,255,255,0.7)", marginBottom: 16 }}>CONSULTANT</div>
-              <div style={{ borderRadius: 18, overflow: "hidden", marginBottom: 22, boxShadow: "0 24px 56px rgba(0,0,0,0.4)", aspectRatio: "4/3", background: "linear-gradient(150deg,#3A2456,#1A0A2E)" }} />
+              <div style={{ borderRadius: 18, overflow: "hidden", marginBottom: 22, boxShadow: "0 24px 56px rgba(0,0,0,0.4)", aspectRatio: "4/3", background: "linear-gradient(150deg,#3A2456,#1A0A2E)" }}>
+                <img src="/images/consultant.jpg" alt="Alicia Fitts consulting" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              </div>
               <p style={{ fontSize: 16, lineHeight: 1.7, color: "#CBBDD8", margin: 0 }}>Through one-on-one consulting, Alicia partners with individuals and organizations to build financial systems that last — turning good intentions into real stability.</p>
             </div>
           </div>

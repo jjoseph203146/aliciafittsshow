@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import type { Episode } from "@/lib/types";
+import EpisodeThumbnail from "@/components/EpisodeThumbnail";
 
 const PF = "var(--font-playfair), serif";
 
@@ -21,21 +22,6 @@ const PLACEHOLDER_EPISODES: Episode[] = [
   { id: "ph8", youtube_url: "", youtube_id: "", title: "Youth Voices of the CSRA", guest_name: "Student Panel", description: "High schoolers share their dreams, challenges, and vision for the community they're inheriting.", category: "Community", published_at: "2025-05-20", is_published: true, created_at: "" },
   { id: "ph9", youtube_url: "", youtube_id: "", title: "Holistic Health for Real Life", guest_name: "Coach Dana Reeves", description: "Practical wellness strategies without the gimmicks — movement, mindset, and community as medicine.", category: "Health", published_at: "2025-06-01", is_published: true, created_at: "" },
 ];
-
-function EpisodeThumbnail({ videoId, title }: { videoId: string; title: string }) {
-  const [src, setSrc] = useState(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`);
-  if (!videoId) {
-    return <div style={{ width: "100%", height: "100%", background: "linear-gradient(135deg,#3A2456,#241B33)", position: "absolute", inset: 0 }} />;
-  }
-  return (
-    <img
-      src={src}
-      alt={title}
-      onError={() => setSrc(`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`)}
-      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-    />
-  );
-}
 
 function VideoModal({ videoId, onClose }: { videoId: string; onClose: () => void }) {
   useEffect(() => {
